@@ -1,0 +1,284 @@
+<!--Start_Dashboard_Status:JumpTo,TrueLogic Dashboard,1,8/16/2024 7:01 PM,8/16/2024 7:01 PM,8/16/2024 7:01 PM,8/17/2024 6:00 AM,11/27/2024 7:00 AM,11/28/2024 7:00 AM,Y,8/13/2024 8:12 PM,Y,11/13/2024 8:10 AM,223,211,0,0,0:End_Dashboard_Status--><SCRIPT type="text/javascript" src="../Images/jsdate.js"></script>
+<SCRIPT type="text/javascript">function Jump(s){ window.location.href = s ;}</SCRIPT>
+<script type="text/javascript">
+	function GetDiff (dt) { 
+		sMins = " mins";
+		sHours = " hrs";
+		sDays = " days";
+		
+		if ( Math.abs (DateDiff ("h", now, dt)) < 24.0 ) {
+			if ( Math.abs (DateDiff ("n", now, dt)) <= 60 ) {
+				return (Math.abs (DateDiff ("n", now, dt)) + sMins);
+			}
+			else
+			{
+				return (Math.abs (DateDiff ("h", now, dt)) + sHours);
+			}
+		}
+		else
+		{
+			return (Math.abs (DateDiff ("d", now, dt)) + sDays);
+		}
+	}
+</script>
+<script type="text/javascript">
+	function DrawRow (Link,Status,T,SampleDue,SampleLate,TestDue,TestLate,ExpNeeded,ExpLate,AddsNeeded,AddsLate,Count,ActiveCount,OtherNeeded,OtherLate) {
+		R = "../Images/Green-360-Button.gif" ;
+		C1color = "#000000"; C2color="#000000"; C3color="#000000"; C4color="#000000"; C5color="#000000"; C6color="#000000";
+		ASTRIS="";
+		tto=""; ttt="";
+		aao="";	aaa="";
+		eeo="";	eee="";
+		mmo="";	mmm="";
+		now = new Date();
+		
+		// -------------------------------------------------------
+		// Check User Defined States set by Rule
+		// -------------------------------------------------------
+		if ( Status & 16 ) { R="../Images/Purple-360-Button.gif"; C1color="#FFFFFF"; }
+		if ( Status & 8 )  { R="../Images/Orange-360-Button.gif"; C1color="#000000"; }
+		if ( Status & 4 )  { R="../Images/Blue-360-Button.gif"; C1color="#FFFFFF"; }
+		if ( Status & 2 )  { R="../Images/Yellow-360-Button.gif"; C1color="#000000"; }
+		if ( Status & 1 )  { R="../Images/Red-360-Button.gif"; C1color="#FFFFFF"; }
+		
+		// -------------------------------------------------------
+		//  Is it deactivated?
+		// -------------------------------------------------------
+		if ( Number(ActiveCount)==0 ) { 
+		      R = "../Images/Gray-360-Button.gif";
+		      C1color = "#000000";
+		}
+		else
+		{	
+			if ( Number(ActiveCount) < Number(Count) ) {  
+				ASTRIS = "../Images/Gray-Astris.gif";
+			}	
+			else
+			{
+				ASTRIS = "";
+			}
+			
+			// -------------------------------------------------------
+			// Test Status
+			// -------------------------------------------------------
+			tto = "";
+			ttt = "";
+			if ( TestDue>"" && TestLate>"" ) {
+			    if ( DateDiff ("n", TestLate, now) >= 0 ) { 
+					tto = "../Images/Red-120-Button.gif";
+					ttt = "Late " + GetDiff (TestLate);
+					C3color = "#FFFFFF";
+				}	
+			    else
+				{
+					if ( DateDiff ("n", TestDue, now) >= 0 ) {
+						tto = "../Images/Green-120-Button.gif";
+						ttt = GetDiff (TestLate) + " Due ";
+						C3color = "#000000";
+					}	
+					else
+					{
+						tto = "";
+						ttt = "";
+						C3color = "#000000";
+					}
+				}
+			}
+
+			// -------------------------------------------------------
+			// Add Status
+			// --------------------------------------------------------
+			aao = "";
+			aaa = "";
+			C4Color = "#000000";
+			if ( AddsNeeded>"" && AddsLate>"" ) {
+			    if ( DateDiff ("n", AddsLate, now) >= 0 ) { 
+					aao = "../Images/Red-120-Button.gif";
+					aaa = "Late " + GetDiff (AddsLate);
+					C4color = "#FFFFFF";
+				}
+			    else
+				{
+					if ( AddsNeeded>"" ) {
+						aao = "../Images/Green-120-Button.gif";
+						aaa = GetDiff (AddsLate) + " Due ";
+						C4color = "#000000";
+					}
+					else
+					{
+						aao = "";
+						aaa = "";
+						C4color = "#000000";
+					}
+			    }
+			}
+			
+			// -------------------------------------------------------
+			// Corrective Action Status
+			// -------------------------------------------------------
+			eeo = "";
+			eee = "";
+			C5color = "#000000";
+			if ( ExpNeeded>"" && ExpLate>"" ) {
+			    if ( DateDiff ("n", ExpLate, now) >= 0 ) { 
+					eeo = "../Images/Red-120-Button.gif";
+					eee = "Late " + GetDiff (ExpLate);
+					C5color = "#FFFFFF";
+				}
+			    else
+				{
+					if ( ExpNeeded>"" ) {
+						eeo = "../Images/Green-120-Button.gif";
+						eee = GetDiff (ExpLate) + " Due ";
+						C5color = "#000000";
+					}
+					else
+					{
+						eeo = "";
+						eee = "";
+						C5color = "#000000";
+					}
+			    }
+			}
+
+			// -------------------------------------------------------
+			// Other Status 
+			// -------------------------------------------------------
+			mmo = "";
+			mmm = "";
+			C6color = "#000000";
+			if ( OtherNeeded>"" && OtherLate>"" ) {
+			    if ( DateDiff ("n", OtherLate, now) >= 0 ) { 
+					mmo = "../Images/Red-120-Button.gif";
+					mmm = "Late " + GetDiff (OtherLate);
+					C6color = "#FFFFFF";
+				}
+			    else
+				{
+//					if ( OtherNeeded>"" ) {
+					if ( DateDiff ("n", OtherNeeded, now) >= 0 ) { 
+						mmo = "../Images/Green-120-Button.gif";
+						mmm = GetDiff (OtherLate) + " Due ";
+						C6color = "#000000";
+					}
+					else
+					{
+						mmo = "";
+						mmm = "";
+						C6olor = "#000000";
+					}
+			    }
+			}
+		}
+
+		document.write(  "<tr><td ONCLICK=\"Jump('"+Link+"')\" onmouseover=\"this.style.cursor='hand'\" height='37' align='center' bordercolorlight='#808080' bordercolordark='#FFFFFF' bordercolor='#C0C0C0' width='20' background='"+ASTRIS+"' ><font color='"+C2color+"' size='2'><p align='center'><b></b></td>"  );
+		document.write(  "<td width='14'>&nbsp;<td>" );
+		document.write(  "<td ONCLICK=\"Jump('"+Link+"')\" onmouseover=\"this.style.cursor='hand'\" height='37' bordercolorlight='#808080' bordercolordark='#FFFFFF' bordercolor='#C0C0C0' width='360' background='"+R+"' ><font color='"+C1color+"'><p align='center'><b>"+T+"</b></td>"  );
+		document.write(  "<td width='14'>&nbsp;<td>" );
+		document.write(  "<td ONCLICK=\"Jump('"+Link+"')\" onmouseover=\"this.style.cursor='hand'\" height='37' bordercolorlight='#808080' bordercolordark='#FFFFFF' bordercolor='#C0C0C0' width='120' background='"+tto+"' ><font color='"+C3color+"' ><p align='center'><b>"+ttt+"</b></td>"  );
+		document.write(  "<td width='14'>&nbsp;<td>" );
+		document.write(  "<td ONCLICK=\"Jump('"+Link+"')\" onmouseover=\"this.style.cursor='hand'\" height='37' bordercolorlight='#808080' bordercolordark='#FFFFFF' bordercolor='#C0C0C0' width='120' background='"+aao+"' ><font color='"+C4color+"'><p align='center'><b>"+aaa+"</b></td>"  );
+		document.write(  "<td width='14'>&nbsp;<td>" );
+		document.write(  "<td ONCLICK=\"Jump('"+Link+"')\" onmouseover=\"this.style.cursor='hand'\" height='37' bordercolorlight='#808080' bordercolordark='#FFFFFF' bordercolor='#C0C0C0' width='120' background='"+eeo+"' ><font color='"+C5color+"' ><p align='center'><b>"+eee+"</b></td>"  );
+		document.write(  "<td width='14'>&nbsp;<td>" );
+		document.write(  "<td ONCLICK=\"Jump('"+Link+"')\" onmouseover=\"this.style.cursor='hand'\" height='37' bordercolorlight='#808080' bordercolordark='#FFFFFF' bordercolor='#C0C0C0' width='120' background='"+mmo+"' ><font color='"+C6color+"' ><p align='center'><b>"+mmm+"</b></td>"  );
+		document.write(  "</tr>");
+	}
+</script>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="refresh" content="120">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Expires" CONTENT="-1">
+<title>TrueLogic Dashboard</title>
+<style type="text/css">
+	body
+	{ 
+		background-image: url('../Images/BackGround.gif');
+		background-repeat: repeat;
+	}
+</style>
+</head>
+
+<script type="text/javascript">
+	var time = null
+	function move() { window.location = window.location.href }
+</script>
+
+<STYLE type="text/css">
+	#Nav a{ position:relative; display:block; text-decoration: none; color:black; }
+	Body td{font-Family: Arial; font-size: 12px; }
+</style>
+
+<body bgcolor="#FFFFFF" link="#003399" vlink="#003399" alink="#003399" style="margin: 20px 0px 0px 0px" onload="timer=setTimeout('move()',10000)">
+<div align="center">
+<table border="0" width="934" id="Nav" cellpadding="0" cellspacing="0" valign="top" >
+	<tr>
+		<td height="60" width="100%"><p align="center"><img border="0" src="../Images/Logo.jpg" width="199" height="101"></td>
+	</tr>
+	<tr>
+		<td width="100%" bordercolorlight="#FFFFFF" bordercolordark="#808080" align="center" valign="top">
+			<table border="0" width="100%" id="HeaderTable" cellspacing="0" cellpadding="0" valign="top" height="73">
+				<tr>
+					<td colspan="3" height="34"><p align="center"><b><font face="Arial" size="5">TrueLogic Dashboard</font></b></td>
+				</tr>
+				<tr>
+					<td colspan="3" height="39"><p align="center">
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td height="340" width="100%" bordercolorlight="#FFFFFF" bordercolordark="#808080" align="center" valign="top">
+			<table border="0" width="100%" id="BodyTable" height="20" cellspacing="0" cellpadding="0" bordercolor="#FFFFFF">
+    			<tr>
+  	    			<td height='20' width='20' bgcolor="#C0C0C0" ><p align='center'>&nbsp;</td>
+					<td width='14'>&nbsp;<td>
+					<td height='20' width='360' bgcolor="#C0C0C0" ><p align='center'><a><b>Process</b></td>
+<!--   Sample Item Removed		<td height='10' width='120' bgcolor="#C0C0C0" ><p align='center'><a><b>Sample</b></td>
+-->					<td width='14'>&nbsp;<td>
+					<td height='20' width='120' bgcolor="#C0C0C0" ><p align='center'><a><b>Test</b></td>
+					<td width='14'>&nbsp;<td>
+					<td height='20' width='120' bgcolor="#C0C0C0" ><p align='center'><a><b>Addslip</b></td>
+					
+					
+					<td width='14'>&nbsp;<td>
+					<td height='20' width='120' bgcolor="#C0C0C0" ><p align='center'><a><b>Corrective Action</b></td>
+					<td width='14'>&nbsp;<td>
+					<td height='20' width='120' bgcolor="#C0C0C0" ><p align='center'><a><b>Other Item</b></td>
+		    	</tr>
+			</Table>
+			<table border="0" width="100%" id="BodyTable" height="37" cellspacing="0" cellpadding="0" valign="top">
+				<script type="text/javascript">DrawRow ("G50.HTM","0","01A-New Barrel Line","10/10/2024 7:01 PM","10/10/2024 7:01 PM","10/10/2024 7:01 PM","10/11/2024 12:30 AM","Y","10/17/2024 8:24 AM","Y","11/13/2024 8:10 AM","15","15", "11/27/2024 9:00 AM", "11/28/2024 9:00 AM", "", "", "");
+DrawRow ("G51.HTM","0","01B New Hoist Line","8/17/2024 12:31 AM","8/17/2024 12:31 AM","8/17/2024 12:31 AM","8/17/2024 6:00 AM","","","","","50","50", "", "", "", "", "");
+DrawRow ("G5.HTM","1","01-Line A","8/16/2024 7:01 PM","8/16/2024 7:01 PM","8/16/2024 7:01 PM","8/17/2024 6:00 AM","Y","8/13/2024 8:12 PM","Y","11/21/2024 1:21 PM","36","36", "11/27/2024 7:00 AM", "11/28/2024 7:00 AM", "", "", "");
+DrawRow ("G7.HTM","1","02- Line B","11/26/2024 5:30 PM","11/26/2024 5:30 PM","11/26/2024 5:30 PM","11/27/2024 2:20 AM","","","Y","11/21/2024 1:22 PM","34","34", "11/27/2024 7:00 AM", "11/28/2024 7:00 AM", "", "", "");
+DrawRow ("G8.HTM","1","03- Line C","11/26/2024 12:30 PM","11/26/2024 12:30 PM","11/26/2024 12:30 PM","11/26/2024 6:00 PM","","","Y","11/21/2024 1:22 PM","14","14", "11/27/2024 7:00 AM", "11/28/2024 7:00 AM", "", "", "");
+DrawRow ("G2.HTM","0","04-Barrel Line A","","","","","","","","","12","0", "", "", "", "", "");
+DrawRow ("G9.HTM","0","06-Powder Line","","","","","","","Y","11/22/2024 6:05 PM","1","1", "", "", "", "", "");
+DrawRow ("G11.HTM","0","07-Lacquer Line","","","","","","","Y","11/22/2024 6:08 PM","1","1", "", "", "", "", "");
+DrawRow ("G34.HTM","0","Line A Temp&Rectifier","","","","","","","","","1","1", "", "", "", "", "");
+DrawRow ("G16.HTM","1","RO Water","","","","","","","Y","11/26/2024 10:50 AM","59","59", "", "", "", "", "");
+
+				</script>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td height="25">
+	        <table border="0" width="100%" cellspacing="0" cellpadding="0" id="table1">
+				<tr>
+					<td width="135"><p align="left"><font face="Arial" size="1">by TrueLogic Company</font></td>
+			    	<td width="490"><p align="center"></td>
+			    	<td width="135"><p align="right"><font face="Arial" size="1">11/27/2024 11:15:49 AM</font></td>
+			    </tr>
+			</table>
+		</td>
+	</tr>
+</table>
+</div>
+</body>
+</html>
